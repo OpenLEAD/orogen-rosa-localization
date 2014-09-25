@@ -1,0 +1,73 @@
+name "rosa_localization"
+# Optionally declare the version number
+# version "0.1"
+
+import_types_from 'base'
+import_types_from "octomap"
+import_types_from "sonar_localizationTypes.hpp"
+
+using_library 'sonaroctomap'
+
+using_library 'sonar_localization'
+import_types_from "sonar_localization/PoseParticle.hpp"
+import_types_from "sonar_localization/UnderwaterVehicleState.hpp"
+import_types_from "sonar_localization/Configuration.hpp"
+
+using_library 'odometry'
+import_types_from "odometry/Configuration.hpp"
+
+using_library "aggregator"
+import_types_from "aggregator"
+
+task_context "Task" do
+   
+    needs_configuration
+    
+    #Configuration options for the localization filter
+    property('sonar_localization_config', '/sonar_localization/Configuration')
+
+    #Configuration options for the odometry
+    property('odometry_config', '/odometry/Configuration')
+	
+    #path to map
+    property('octomap_path', 'string')
+    
+    #filter parameters
+    property('start_pose', '/base/samples/RigidBodyState')
+    
+    #If the device  does not provide other means to determine sample loss
+    #property("sample_loss_threshold", "int", 2)
+
+
+    ##INPUT PORTS##
+    input_port "sonarBeams", "/base/samples/SonarBeam"
+
+    input_port('stateSamples', 'odometry/UnderwaterVehicleState')
+    input_port('roll', '/double')
+    
+
+   
+   ##OUTPUT PORTS ##
+
+    #timestamped particle distribution of the pose.
+    output_port('pose_distribution', '/sonar_localization/PoseDistribution')
+    
+    #timestamped samples of the particle filters pose centroid.
+    output_port('pose_samples', '/base/samples/RigidBodyState')
+	
+	
+    output_port('timestamp_estimator_status', '/aggregator/TimestampEstimatorStatus')
+
+    transformer do
+	max_latency( 0.2 )
+
+	transformation("sonar", "body")	
+
+	align_port("sonarBeams", 0.5) 
+	align_port("stateSamples", 0.5)
+	align_port("orientation", 0.5)
+
+    end
+
+    port_driven "dynamic_transformations"
+end
