@@ -10,8 +10,9 @@ using_library 'sonaroctomap'
 
 using_library 'rosa_localization'
 import_types_from "rosa_localization/RosaPoseParticle.hpp"
-import_types_from "rosa_localization/DepthState.hpp"
 import_types_from "rosa_localization/Configuration.hpp"
+
+import_types_from "odometry/DepthState.hpp"
 
 using_library 'odometry'
 import_types_from "odometry/Configuration.hpp"
