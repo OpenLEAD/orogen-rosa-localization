@@ -4,14 +4,14 @@ name "rosa_localization"
 
 import_types_from 'base'
 import_types_from "octomap"
-import_types_from "sonar_localizationTypes.hpp"
+import_types_from "rosa_localizationTypes.hpp"
 
 using_library 'sonaroctomap'
 
-using_library 'sonar_localization'
-import_types_from "sonar_localization/PoseParticle.hpp"
-import_types_from "sonar_localization/UnderwaterVehicleState.hpp"
-import_types_from "sonar_localization/Configuration.hpp"
+using_library 'rosa_localization'
+import_types_from "rosa_localization/RosaPoseParticle.hpp"
+import_types_from "rosa_localization/DepthState.hpp"
+import_types_from "rosa_localization/Configuration.hpp"
 
 using_library 'odometry'
 import_types_from "odometry/Configuration.hpp"
@@ -24,7 +24,7 @@ task_context "Task" do
     needs_configuration
     
     #Configuration options for the localization filter
-    property('sonar_localization_config', '/sonar_localization/Configuration')
+    property('sonar_localization_config', '/rosa_localization/Configuration')
 
     #Configuration options for the odometry
     property('odometry_config', '/odometry/Configuration')
@@ -40,10 +40,13 @@ task_context "Task" do
 
 
     ##INPUT PORTS##
-    input_port "sonarBeams", "/base/samples/SonarBeam"
+    input_port ('sonarBeams', '/base/samples/SonarBeam')
 
-    input_port('stateSamples', 'odometry/UnderwaterVehicleState')
-    input_port('roll', '/double')
+    #depth information given by the depth sensor
+    input_port('depth', 'odometry/DepthState')
+
+    #orientation of the robot given by the inclinometer
+    input_port('roll', 'base/samples/RigidBodyState')
     
 
    
