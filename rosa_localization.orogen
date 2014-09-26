@@ -68,8 +68,8 @@ task_context "Task" do
 	transformation("sonar", "body")	
 
 	align_port("sonarBeams", 0.5) 
-	align_port("stateSamples", 0.5)
-	align_port("orientation", 0.5)
+	align_port("depth", 0.2)
+	align_port("orientation", 0.2)
 
     end
 
