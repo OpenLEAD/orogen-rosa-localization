@@ -54,7 +54,7 @@ task_context "Task" do
    ##OUTPUT PORTS ##
 
     #timestamped particle distribution of the pose.
-    output_port('pose_distribution', '/sonar_localization/PoseDistribution')
+    output_port('pose_distribution', '/rosa_localization/PoseDistribution')
     
     #timestamped samples of the particle filters pose centroid.
     output_port('pose_samples', '/base/samples/RigidBodyState')
