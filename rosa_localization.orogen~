@@ -40,7 +40,7 @@ task_context "Task" do
 
 
     ##INPUT PORTS##
-    input_port ('sonarBeams', '/base/samples/SonarBeam')
+    input_port ('sonarBeams', 'base/samples/SonarBeam')
 
     #depth information given by the depth sensor
     input_port('depth', 'odometry/DepthState')
