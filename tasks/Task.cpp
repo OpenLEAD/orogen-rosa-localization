@@ -68,6 +68,28 @@ bool Task::configureHook()
 }
 bool Task::startHook()
 {
+   // init the filter
+    base::Pose pose( _start_pose.value().position, _start_pose.value().orientation );
+    LOG_INFO_S << "starting at position " << pose.position.transpose() << std::endl;  
+    
+    const double angle = pose.orientation.toRotationMatrix().eulerAngles(2,1,0)[0];
+    
+    
+    
+    Configuration const& conf = _rosa_localization_config.get();
+    filter->init(
+                conf.particleCount, 
+		base::Pose2D(Eigen::Vector2d(pose.position.x(),pose.position.y()),angle), 
+		base::Pose2D(Eigen::Vector2d(conf.initialTranslationError.x(),
+                                             conf.initialTranslationError.y()),
+			                     conf.initialRotationError.z()),
+		_start_roll,
+		conf.initialRollError, 
+		pose.position.z(),
+		conf.initialTranslationError.z() + 1e-3 // z-sigma
+		);
+    LOG_INFO_S << "initialized" << std::endl;
+    
     if (! TaskBase::startHook())
         return false;
     return true;

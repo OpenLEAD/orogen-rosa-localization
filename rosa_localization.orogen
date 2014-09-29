@@ -35,9 +35,10 @@ task_context "Task" do
     
     #filter parameters
     property('start_pose', '/base/samples/RigidBodyState')
+    property('start_roll', 'double', 0)
     
     #If the device  does not provide other means to determine sample loss
-    #property("sample_loss_threshold", "int", 2)
+    #property('sample_loss_threshold', 'int', 2)
 
 
     ##INPUT PORTS##
