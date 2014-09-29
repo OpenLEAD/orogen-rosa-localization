@@ -5,6 +5,12 @@
 
 #include "rosa_localization/TaskBase.hpp"
 
+#include <rosa_localization/RosaPoseEstimator.hpp>
+#include <rosa_localization/RosaOdometry.hpp>
+
+
+#include <sonaroctomap/SonarOcTree.hpp>
+
 namespace rosa_localization {
 
     /*! \class Task 
@@ -25,6 +31,11 @@ namespace rosa_localization {
     {
 	friend class TaskBase;
     protected:
+      
+        RosaPoseEstimator* filter;
+	odometry::RosaOdometry* odometry;
+	
+	octomap::SonarOcTree* refMap;
 
         virtual void depthTransformerCallback(const base::Time &ts, const ::odometry::DepthState &depth_sample);
 

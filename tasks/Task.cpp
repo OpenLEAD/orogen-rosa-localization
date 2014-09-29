@@ -30,7 +30,12 @@ void Task::rollTransformerCallback(const base::Time &ts, const ::base::samples::
 
 void Task::sonarBeamsTransformerCallback(const base::Time &ts, const ::base::samples::SonarBeam &sonarBeams_sample)
 {
-    throw std::runtime_error("Transformer callback for sonarBeams not implemented");
+  //Transformation between the sonar and the body, takes in account the effect of the PTU.
+  Eigen::Affine3d tf;
+  if (!_sonar2body.get(ts, tf, false))
+    return;  
+  
+  throw std::runtime_error("Transformer callback for sonarBeams not implemented");
 }
 
 /// The following lines are template definitions for the various state machine
@@ -39,9 +44,27 @@ void Task::sonarBeamsTransformerCallback(const base::Time &ts, const ::base::sam
 
 bool Task::configureHook()
 {
-    if (! TaskBase::configureHook())
-        return false;
-    return true;
+    if( !_octomap_path.value().empty() )
+    {
+	LOG_INFO_S << "loading map: " << _octomap_path.value() << std::endl;
+	
+	refMap = new octomap::SonarOcTree(_octomap_path.value());
+	
+	odometry = new odometry::RosaOdometry(_odometry_config.get());
+	
+	if(!refMap){
+	  
+	   filter = new RosaPoseEstimator( *odometry,
+				      *refMap, _rosa_localization_config.get() );
+	   
+	}
+	else this->error();
+	
+
+    }
+    else this->error();
+
+    return TaskBase::configureHook();
 }
 bool Task::startHook()
 {

@@ -25,7 +25,7 @@ task_context "Task" do
     needs_configuration
     
     #Configuration options for the localization filter
-    property('sonar_localization_config', '/rosa_localization/Configuration')
+    property('rosa_localization_config', '/rosa_localization/Configuration')
 
     #Configuration options for the odometry
     property('odometry_config', '/odometry/Configuration')

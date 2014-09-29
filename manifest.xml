@@ -16,7 +16,7 @@
   -->
   <depend package="slam/octomap" />
   <depend package="slam/sonar_octomap" />
-  <depend package="rosa_localization" />
+  <depend package="slam/rosa_localization" />
   <depend package="drivers/orogen/transformer" />
   <depend package="base/types" />
 </package>
