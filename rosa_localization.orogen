@@ -48,7 +48,7 @@ task_context "Task" do
     input_port('depth', 'odometry/DepthState')
 
     #orientation of the robot given by the inclinometer
-    input_port('roll', 'base/samples/RigidBodyState')
+    input_port('roll', 'double')
     
 
    

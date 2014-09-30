@@ -36,6 +36,11 @@ namespace rosa_localization {
 	odometry::RosaOdometry* odometry;
 	
 	octomap::SonarOcTree* refMap;
+	
+	//Temporary data for the aligment of the ports
+	odometry::DepthState lastDepthState;
+	double lastRollMeasurement;
+	
 
         virtual void depthTransformerCallback(const base::Time &ts, const ::odometry::DepthState &depth_sample);
 
