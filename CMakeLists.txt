@@ -6,4 +6,3 @@ INCLUDE(rosa_localizationBase)
 
 # FIND_PACKAGE(KDL)
 # FIND_PACKAGE(OCL)
-

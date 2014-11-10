@@ -45,10 +45,10 @@ task_context "Task" do
     input_port('sonarBeams', 'base/samples/SonarBeam')
 
     #depth information given by the depth sensor
-    input_port('depth', 'odometry/DepthState')
+    input_port('depth', '/base/samples/RigidBodyState')
 
     #orientation of the robot given by the inclinometer
-    input_port('roll', 'double')
+    input_port('roll', '/base/samples/RigidBodyState')
     
 
    
@@ -67,10 +67,12 @@ task_context "Task" do
 	max_latency( 0.2 )
 
 	transformation("sonar", "body")	
+	#transformation("depth", "body")
+	#transformation("roll", "body")
 
 	align_port("sonarBeams", 0.5) 
-	align_port("depth", 0.2)
-	align_port("roll", 0.2)
+	#align_port("depth", 0.2)
+	#align_port("roll", 0.2)
 
     end
 
