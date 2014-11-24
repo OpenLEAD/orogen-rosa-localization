@@ -39,8 +39,8 @@ namespace rosa_localization {
 	
 
         virtual void depthTransformerCallback(const base::Time &ts, const ::base::samples::RigidBodyState &depth_sample);
-
-        virtual void rollTransformerCallback(const base::Time &ts, const ::base::samples::RigidBodyState &roll_sample);
+	
+	virtual void rollTransformerCallback(const base::Time &ts, const ::base::samples::RigidBodyState &roll_sample);
 
         virtual void sonarBeamsTransformerCallback(const base::Time &ts, const ::base::samples::SonarBeam &sonarBeams_sample);
 

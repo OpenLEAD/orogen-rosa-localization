@@ -22,22 +22,21 @@ Task::~Task()
 
 void Task::depthTransformerCallback(const base::Time &ts, const ::base::samples::RigidBodyState &depth_sample)
 {
-    Eigen::Affine3d tf;
-    if (!_depth2body.get(ts, tf, false))
+    Eigen::Affine3d depth2body_tf;
+    if (!_depth2body.get(ts, depth2body_tf, false))
         return;
     
-    odometry->update(depth_sample,base::Orientation::Identity());
+    Eigen::Affine3d body_tf = depth2body_tf*depth_sample.getTransform();
+    
+    //copy to preserve the covs
+    base::samples::RigidBodyState body_depth = depth_sample;
+    body_depth.setTransform(body_tf);
+    odometry->update(body_depth,base::Orientation::Identity());
 
 }
 
 void Task::rollTransformerCallback(const base::Time &ts, const ::base::samples::RigidBodyState &roll_sample)
 {
-    Eigen::Affine3d inclinometer2body_tf;
-    if (!_roll2body.get(ts, inclinometer2body_tf, false))
-        return;
-    Eigen::Quaterniond rotInclinometer2body_tf( inclinometer2body_tf.linear() );
-    
-    base::Orientation bodyRoll = rotInclinometer2body_tf*roll_sample.orientation;
     filter->project(roll_sample.orientation);
 }
 
@@ -106,7 +105,7 @@ bool Task::startHook()
                                 conf.initialTranslationError.y(),
 			        conf.initialTranslationError.z() ),
 		_start_roll,
-		conf.initialRollError
+		conf.initialRotationError.x()
 		);
     LOG_INFO_S << "initialized" << std::endl;
     

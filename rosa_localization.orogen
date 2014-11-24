@@ -36,7 +36,9 @@ task_context "Task" do
     #filter parameters
     property('start_pose', '/base/samples/RigidBodyState')
     property('start_roll', 'double', 0)
-    
+    property('body_frame' ,'/std/string', 'body_frame')
+
+     
     #If the device  does not provide other means to determine sample loss
     #property('sample_loss_threshold', 'int', 2)
 
@@ -48,7 +50,7 @@ task_context "Task" do
     input_port('depth', '/base/samples/RigidBodyState')
 
     #orientation of the robot given by the inclinometer
-    input_port('roll', '/base/samples/RigidBodyState')
+    #input_port('roll', '/base/samples/RigidBodyState')
     
 
    
@@ -66,12 +68,11 @@ task_context "Task" do
     transformer do
 	max_latency( 0.2 )
 
-	transformation("sonar", "body")	
-	#transformation("depth", "body")
-	#transformation("roll", "body")
+	transformation("sonar", "body")
+	transformation("depth", "body")
 
 	align_port("sonarBeams", 0.5) 
-	#align_port("depth", 0.2)
+	align_port("depth", 0.2)
 	#align_port("roll", 0.2)
 
     end
